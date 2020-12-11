@@ -252,7 +252,14 @@ def create_copy_hyfile(original_path,destination_path ):
   fs.close()
   fd.close()
 
-
+def change_int_of_mask(mask):
+  R, C = len(mask), len(mask[0])
+  ret_mask = [[0]*C for _ in range(R)]
+  for i in range(R):
+    for j in range(C):
+      if mask[i][j] == 255:
+        ret_mask[i][j] = 1
+  return ret_mask
 
 
 if __name__ == "__main__":
@@ -285,7 +292,7 @@ if __name__ == "__main__":
                       "yellow": [255, 238, 51]}
   
   create_copy_hyfile(original_path,destination_path)
-  print('CREATED COPY OF H5PY FILE')
+  print('CREATED COPY OF .h5py FILE')
 
   MASK_SIZE = 128
 
@@ -294,7 +301,7 @@ if __name__ == "__main__":
 
   for i in range(num_keys_in_destination):
     xid = f'{i:06d}'
-    # print(xid,'/', num_keys_in_destination)
+    print(xid,'/', num_keys_in_destination)
 
     txt_values = fdest[xid]['text'].value.split(',')
     object_vals = fdest[xid]['objects']
@@ -320,6 +327,8 @@ if __name__ == "__main__":
       elif color_added == 'gray':
         mask = np.array([[0]*MASK_SIZE for _ in range(MASK_SIZE)])
         mask = gray_region(y_coord, x_coord, shape_added, mask)
+
+      mask = change_int_of_mask(mask)
       what_mask.append(mask)
 
       #WHERE MASK
