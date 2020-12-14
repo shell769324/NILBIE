@@ -1,0 +1,1 @@
+For MSE Only, run either GAN or Classifier and set all lambdas to 0
